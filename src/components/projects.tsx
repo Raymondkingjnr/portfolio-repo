@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const Projects = () => {
   const [active, setActive] = React.useState<"Websites" | "Mobile Apps">(
-    "Mobile Apps"
+    "Websites"
   );
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
