@@ -53,7 +53,7 @@ const Hero = () => {
               <GitBranchIcon className=" cursor-pointer" />
             </a>
             <a
-              href="www.linkedin.com/in/raymond001"
+              href="https://linkedin.com/in/raymond001"
               target="_blank"
               rel="noopener noreferrer"
             >
