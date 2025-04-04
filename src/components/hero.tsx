@@ -6,7 +6,7 @@ import { GitBranchIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
 import Link from "next/link";
 const Hero = () => {
   return (
-    <section className=" max-w-[1200px] mx-auto  pt-[3rem] px-[1.5rem]">
+    <section className=" max-w-[1600px] mx-auto  pt-[3rem] px-[1.5rem]">
       <Link href="/guest-book" className=" hidden md:block">
         <Button className=" w-[180px] h-[40px] bg-slate-800">GuestBook</Button>
       </Link>
