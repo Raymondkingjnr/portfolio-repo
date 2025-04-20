@@ -13,6 +13,7 @@ import {
 import {
   aiImg,
   annasimg,
+  bank,
   healthpal,
   hotel,
   movie,
@@ -83,21 +84,15 @@ export const projectsData = [
       "Explore a curated selection of premium supplements and wellness products designed to elevate your mind, body, and spirit.",
     ],
   },
-  // {
-  //   gitLink: "https://github.com/Raymondkingjnr/Carz-hub__next.js",
-  //   url: "https://carz-hub-next-js.vercel.app/",
-  //   title: "Carz Hub",
-  //   img: cars,
-  //   stacks: ["Nextjs", "Tailwindcss", "Typescript", "Rapid API"],
-  //   des: "Carz Hub is a car website where users can browser through cars and get information about them, like color, price, year of manufacture and so on",
-  // },
-  // {
-  //   gitLink: "https://github.com/Raymondkingjnr/dice-game",
-  //   url: "https://dice-game-amber-three.vercel.app/",
-  //   title: "Pig Game",
-  //   stacks: ["Vanilla Javascript", "HTML", "CSS"],
-  //   des: "A gaming website where two players can play a game of dice rolling, user can either hold a score or keep playing until he gets a high number then he can hold the score and continue playing it was created with plain javascript",
-  // },
+  {
+    gitLink: "https://github.com/Raymondkingjnr/",
+    url: "https://qbdashboard.vercel.app/",
+    title: "bankdash dashbord",
+    img: bank,
+    stacks: ["Nextjs", "Tailwindcss", "Typescript", "Shade cn"],
+    des: "A simple dashboard website",
+  },
+
   {
     gitLink: "https://github.com/Raymondkingjnr/artist-profile-",
     url: "https://tuneinbio.vercel.app/",

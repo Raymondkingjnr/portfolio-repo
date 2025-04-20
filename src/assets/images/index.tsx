@@ -7,6 +7,7 @@ import game from "./game.png";
 import movie from "./movie.png";
 import annasimg from "./annas.png";
 import healthpal from "./healthpal.jpeg";
+import bank from "./bank.png";
 export {
   devImg,
   aiImg,
@@ -17,4 +18,5 @@ export {
   cars,
   game,
   movie,
+  bank,
 };
