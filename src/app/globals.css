@@ -124,7 +124,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-[#0b1215] text-white font-[ubuntu];
+    @apply bg-[#000001] text-white font-[ubuntu];
   }
 }
 @keyframes movePattern {

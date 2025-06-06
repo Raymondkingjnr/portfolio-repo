@@ -4,12 +4,17 @@ import { devImg } from "@/assets/images";
 import { Button } from "./ui/button";
 import { GitBranchIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
 import Link from "next/link";
+import PopInSection from "./pop-in-section";
 const Hero = () => {
   return (
-    <section className=" max-w-[1600px] mx-auto  pt-[3rem] px-[1.5rem]">
-      <Link href="/guest-book" className=" hidden md:block">
-        <Button className=" w-[180px] h-[40px] bg-slate-800">GuestBook</Button>
-      </Link>
+    <PopInSection className=" max-w-[1600px] mx-auto  pt-[3rem] px-[1.5rem]">
+      <div className="flex justify-between mb-4">
+        <Link href="/guest-book" className=" hidden md:block">
+          <Button className=" w-[180px] h-[40px] bg-slate-800">
+            GuestBook
+          </Button>
+        </Link>
+      </div>
       <div className=" grid place-content-center text-center">
         <main>
           <div className="grid place-content-center ">
@@ -39,7 +44,7 @@ const Hero = () => {
           </Link>
           <div className=" flex justify-center gap-5 mt-5">
             <a
-              href="https://twitter.com/raymond_dwebdev"
+              href="https://twitter.com/_ray_raymond"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -60,18 +65,30 @@ const Hero = () => {
               <LinkedinIcon className=" cursor-pointer" />
             </a>
           </div>
-          <a
-            href="mailto:nnajiarinze001@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="mt-5 bg-[#FF7F50] w-[180px] h-[40px] cursor-pointer">
-              Contact Me
-            </Button>
-          </a>
+          <div className="flex my-5 gap-[10px] justify-center items-center ">
+            <a
+              href="mailto:nnajiarinze001@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-[#FF7F50] w-[150px] md:w-[180px] h-[40px] cursor-pointer">
+                Contact Me
+              </Button>
+            </a>
+            <a
+              href="/Resume.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="w-[150px] md:w-[180px] h-[40px] bg-blue-600">
+                Download CV
+              </Button>
+            </a>
+          </div>
         </main>
       </div>
-    </section>
+    </PopInSection>
   );
 };
 

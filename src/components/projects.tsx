@@ -4,52 +4,22 @@ import React from "react";
 import { Button } from "./ui/button";
 import { mobileApps, projectsData } from "@/constant/data";
 import { GithubIcon, LinkIcon } from "lucide-react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-
+import PopInSection from "./pop-in-section";
 const Projects = () => {
   const [active, setActive] = React.useState<"Websites" | "Mobile Apps">(
     "Websites"
   );
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
-  };
 
   return (
-    <motion.div
-      className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={containerVariants}
-    >
-      <div className="w-fit">
+    <div className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]">
+      <PopInSection className="w-fit">
         <h3 className="text-lg md:text-xl font-semibold">Projects</h3>
         <div className="h-[2px] w-full mt-1 bg-[#B0BEC5]" />
-      </div>
+      </PopInSection>
 
-      <div className=" flex items-center gap-5 mt-6 mb-5">
+      <PopInSection className=" flex items-center gap-5 mt-6 mb-5">
         <div
           className="flex items-center gap-1.5"
           onClick={() => setActive("Websites")}
@@ -71,19 +41,13 @@ const Projects = () => {
           )}
           <h3 className=" font-medium cursor-pointer text-base">Mobile Apps</h3>
         </div>
-      </div>
+      </PopInSection>
       {active === "Websites" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[5rem] gap-y-[2rem]">
           {projectsData.map((projects, index) => (
-            <motion.div
+            <PopInSection
               key={index}
               className="mt-[1rem] md:min-w-[340px] lg:min-w-[400px]"
-              variants={itemVariants}
-              custom={index}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: index * 0.5 }}
             >
               <h2 className="font-medium text-xl capitalize">
                 {projects.title}
@@ -126,7 +90,7 @@ const Projects = () => {
               <p className="pt-3 text-sm font-normal leading-[2rem]">
                 {projects.des}
               </p>
-            </motion.div>
+            </PopInSection>
           ))}
         </div>
       )}
@@ -135,15 +99,9 @@ const Projects = () => {
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[5rem] gap-y-[2rem]">
             {mobileApps.map((projects, index) => (
-              <motion.div
+              <PopInSection
                 key={index}
                 className="mt-[1rem] md:min-w-[340px] lg:min-w-[400px]"
-                variants={itemVariants}
-                custom={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: index * 0.5 }}
               >
                 <h2 className="font-medium text-xl capitalize">
                   {projects.title}
@@ -184,7 +142,7 @@ const Projects = () => {
                 <p className="pt-3 text-sm font-normal leading-[2rem]">
                   {projects.des}
                 </p>
-              </motion.div>
+              </PopInSection>
             ))}
           </div>
         </div>
@@ -201,7 +159,7 @@ const Projects = () => {
           </Button>
         </a>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
