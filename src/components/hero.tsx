@@ -10,7 +10,7 @@ const Hero = () => {
     <PopInSection className=" max-w-[1600px] mx-auto  pt-[3rem] px-[1.5rem]">
       <div className="flex justify-between mb-4">
         <Link href="/guest-book" className=" hidden md:block">
-          <Button className=" w-[180px] h-[40px] bg-slate-800">
+          <Button className=" w-[180px] text-black h-[40px] bg-slate-50">
             GuestBook
           </Button>
         </Link>
@@ -38,7 +38,7 @@ const Hero = () => {
             and I&apos;m always looking for new challenges.
           </p>
           <Link href="/guest-book" className="block md:hidden mt-3">
-            <Button className=" w-[180px] h-[40px] bg-slate-800">
+            <Button className=" w-[180px] text-black h-[40px] bg-slate-50">
               GuestBook
             </Button>
           </Link>
@@ -71,7 +71,7 @@ const Hero = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="bg-[#FF7F50] w-[150px] md:w-[180px] h-[40px] cursor-pointer">
+              <Button className="bg-orange-500 w-[150px] md:w-[180px] h-[40px] cursor-pointer">
                 Contact Me
               </Button>
             </a>
@@ -81,7 +81,7 @@ const Hero = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="w-[150px] md:w-[180px] h-[40px] bg-blue-600">
+              <Button className="w-[150px] text-black md:w-[180px] h-[40px] bg-slate-50">
                 Download CV
               </Button>
             </a>

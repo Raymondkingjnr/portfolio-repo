@@ -154,7 +154,7 @@ const Projects = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Button className="bg-[#FF7F50] w-[200px] h-[50px] cursor-pointer">
+          <Button className="bg-orange-500 w-[200px] h-[50px] cursor-pointer">
             More
           </Button>
         </a>

@@ -17,7 +17,7 @@ const Skills = () => {
           height: "60px",
         }}
         gradient={true}
-        gradientColor="#5f5f5f"
+        gradientColor="#000001"
         gradientWidth={50}
         className="flex gap-[3rem] items-center justify-between"
       >

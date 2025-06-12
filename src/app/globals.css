@@ -127,14 +127,3 @@
     @apply bg-[#000001] text-white font-[ubuntu];
   }
 }
-@keyframes movePattern {
-  0% {
-    background-position: 0 0;
-  }
-  50% {
-    background-position: 10px 10px;
-  }
-  100% {
-    background-position: 0 0;
-  }
-}
