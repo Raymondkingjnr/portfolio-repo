@@ -17,7 +17,8 @@ import {
   healthpal,
   hotel,
   movie,
-  sportify,
+  // sportify,
+  weather_app,
 } from "@/assets/images";
 
 export const skillsData = [
@@ -85,22 +86,35 @@ export const projectsData = [
     ],
   },
   {
-    gitLink: "https://github.com/Raymondkingjnr/",
+    gitLink: "https://github.com/Raymondkingjnr/dashboard",
     url: "https://qbdashboard.vercel.app/",
     title: "bankdash dashbord",
     img: bank,
     stacks: ["Nextjs", "Tailwindcss", "Typescript", "Shade cn"],
-    des: "A simple dashboard website",
+    des: " A visually rich and responsive dashboard interface for tracking financial data. ",
+  },
+  {
+    gitLink: "https://github.com/Raymondkingjnr/weather-app",
+    url: "https://weather-mini-app-18.vercel.app/",
+    title: "weather wepapp",
+    img: weather_app,
+    stacks: [
+      "React 19",
+      "styled-component",
+      "Typescript",
+      "Leaflet & Open Meteo API",
+    ],
+    des: " A mini weather app that displays the for a list of cities that are on the map. ",
   },
 
-  {
-    gitLink: "https://github.com/Raymondkingjnr/artist-profile-",
-    url: "https://tuneinbio.vercel.app/",
-    title: "Tune In Bio",
-    img: sportify,
-    stacks: ["React", "Javascript", "Tailwindcss", "Spoitfy API"],
-    des: "A website that allows user to search any of their favorite artists that are avaliable on sportify they can also see the artist albums and top tracks",
-  },
+  // {
+  //   gitLink: "https://github.com/Raymondkingjnr/artist-profile-",
+  //   url: "https://tuneinbio.vercel.app/",
+  //   title: "Tune In Bio",
+  //   img: sportify,
+  //   stacks: ["React", "Javascript", "Tailwindcss", "Spoitfy API"],
+  //   des: "A website that allows user to search any of their favorite artists that are avaliable on sportify they can also see the artist albums and top tracks",
+  // },
   {
     gitLink: "https://github.com/Raymondkingjnr/hotel-managment",
     url: "https://hotel-managment-three.vercel.app/",

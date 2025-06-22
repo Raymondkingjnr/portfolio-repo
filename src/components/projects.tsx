@@ -15,7 +15,9 @@ const Projects = () => {
   return (
     <div className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]">
       <PopInSection className="w-fit">
-        <h3 className="text-lg md:text-xl font-semibold">Projects</h3>
+        <h3 className="text-lg md:text-xl font-semibold darkThemeText">
+          Projects
+        </h3>
         <div className="h-[2px] w-full mt-1 bg-[#B0BEC5]" />
       </PopInSection>
 
@@ -27,7 +29,10 @@ const Projects = () => {
           {active === "Websites" && (
             <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
           )}
-          <h3 className=" font-medium cursor-pointer text-base"> Websites</h3>
+          <h3 className="font-semibold cursor-pointer text-base darkThemeText">
+            {" "}
+            Websites
+          </h3>
         </div>
         {/*  */}
         <div className=" h-7 w-[2px] bg-white" />
@@ -39,7 +44,9 @@ const Projects = () => {
           {active === "Mobile Apps" && (
             <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
           )}
-          <h3 className=" font-medium cursor-pointer text-base">Mobile Apps</h3>
+          <h3 className="font-semibold cursor-pointer text-base darkThemeText">
+            Mobile Apps
+          </h3>
         </div>
       </PopInSection>
       {active === "Websites" && (
@@ -49,7 +56,7 @@ const Projects = () => {
               key={index}
               className="mt-[1rem] md:min-w-[340px] lg:min-w-[400px]"
             >
-              <h2 className="font-medium text-xl capitalize">
+              <h2 className="font-semibold text-lg capitalize darkThemeText">
                 {projects.title}
               </h2>
               <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
@@ -84,10 +91,12 @@ const Projects = () => {
               </span>
               <div className="flex flex-wrap  gap-[0.76rem] font-semibold">
                 {projects.stacks?.map((items, index) => (
-                  <p key={index}>{items}</p>
+                  <p key={index} className="darkThemeText leading-[1rem]">
+                    {items}
+                  </p>
                 ))}
               </div>
-              <p className="pt-3 text-sm font-normal leading-[2rem]">
+              <p className=" text-sm font-normal leading-[1.5rem] pt-3.5 darkThemeText">
                 {projects.des}
               </p>
             </PopInSection>
@@ -103,7 +112,7 @@ const Projects = () => {
                 key={index}
                 className="mt-[1rem] md:min-w-[340px] lg:min-w-[400px]"
               >
-                <h2 className="font-medium text-xl capitalize">
+                <h2 className="font-medium md:font-semibold text-xl capitalize darkThemeText">
                   {projects.title}
                 </h2>
                 <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
@@ -136,10 +145,12 @@ const Projects = () => {
                 </span>
                 <div className="flex flex-wrap  gap-[0.76rem] font-semibold">
                   {projects.stacks?.map((items, index) => (
-                    <p key={index}>{items}</p>
+                    <p key={index} className="darkThemeText">
+                      {items}
+                    </p>
                   ))}
                 </div>
-                <p className="pt-3 text-sm font-normal leading-[2rem]">
+                <p className=" darkThemeText text-sm font-normal leading-[1.3rem]">
                   {projects.des}
                 </p>
               </PopInSection>

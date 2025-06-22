@@ -8,8 +8,10 @@ import movie from "./movie.png";
 import annasimg from "./annas.png";
 import healthpal from "./healthpal.jpeg";
 import bank from "./bank.png";
+import weather_app from "./weather-app.png";
 export {
   devImg,
+  weather_app,
   aiImg,
   sportify,
   healthpal,

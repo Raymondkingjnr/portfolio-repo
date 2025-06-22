@@ -123,7 +123,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+  .darkThemeText {
+    @apply dark:text-white text-black;
+  }
   body {
-    @apply bg-[#000001] text-white font-[ubuntu];
+    @apply bg-[#ffffff] dark:bg-[#000001] text-white font-[ubuntu];
   }
 }
