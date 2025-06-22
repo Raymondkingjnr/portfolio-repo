@@ -20,7 +20,6 @@ const Projects = () => {
         </h3>
         <div className="h-[2px] w-full mt-1 bg-[#B0BEC5]" />
       </PopInSection>
-
       <PopInSection className=" flex items-center gap-5 mt-6 mb-5">
         <div
           className="flex items-center gap-1.5"
