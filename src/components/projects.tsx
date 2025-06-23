@@ -3,10 +3,11 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { mobileApps, projectsData } from "@/constant/data";
-import { GithubIcon, LinkIcon } from "lucide-react";
-import Image from "next/image";
+import { GithubIcon, Link2Icon, LinkIcon } from "lucide-react";
+// import Image from "next/image";
 import Link from "next/link";
 import PopInSection from "./pop-in-section";
+
 const Projects = () => {
   const [active, setActive] = React.useState<"Websites" | "Mobile Apps">(
     "Websites"
@@ -15,8 +16,8 @@ const Projects = () => {
   return (
     <div className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]">
       <PopInSection className="w-fit">
-        <h3 className="text-lg md:text-xl font-semibold darkThemeText">
-          Projects
+        <h3 className="text-lg md:text-xl font-semibold capitalize darkThemeText">
+          projects
         </h3>
         <div className="h-[2px] w-full mt-1 bg-[#B0BEC5]" />
       </PopInSection>
@@ -58,7 +59,7 @@ const Projects = () => {
               <h2 className="font-semibold text-lg capitalize darkThemeText">
                 {projects.title}
               </h2>
-              <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
+              {/* <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
                 <Image
                   src={projects.img}
                   width={300}
@@ -66,7 +67,7 @@ const Projects = () => {
                   alt={projects.title}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </div> */}
               <span className="flex gap-[1rem] py-3">
                 <a
                   href={projects.gitLink}
@@ -84,13 +85,14 @@ const Projects = () => {
                   rel="noopener noreferrer"
                   className="h-[27px] w-[37px] bg-orange-500 rounded grid place-content-around"
                 >
-                  <LinkIcon size={15} />
+                  <Link2Icon size={15} />
                 </a>
                 {/*  */}
               </span>
-              <div className="flex flex-wrap  gap-[0.76rem] font-semibold">
+
+              <div className="flex flex-wrap  gap-[0.76rem] font-semibold mt-4">
                 {projects.stacks?.map((items, index) => (
-                  <p key={index} className="darkThemeText leading-[1rem]">
+                  <p key={index} className="darkThemeText leading-[1rem] ">
                     {items}
                   </p>
                 ))}
@@ -114,7 +116,7 @@ const Projects = () => {
                 <h2 className="font-medium md:font-semibold text-xl capitalize darkThemeText">
                   {projects.title}
                 </h2>
-                <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
+                {/* <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
                   <Image
                     src={projects.img}
                     width={300}
@@ -122,7 +124,7 @@ const Projects = () => {
                     alt={projects.title}
                     className="w-full h-full object-cover"
                   />
-                </div>
+                </div> */}
                 <span className="flex gap-[1rem] py-3">
                   <a
                     href={projects.gitLink}
@@ -142,7 +144,7 @@ const Projects = () => {
                   </Link>
                   {/*  */}
                 </span>
-                <div className="flex flex-wrap  gap-[0.76rem] font-semibold">
+                <div className="flex flex-wrap  gap-[0.76rem] mt-3 font-semibold">
                   {projects.stacks?.map((items, index) => (
                     <p key={index} className="darkThemeText">
                       {items}

@@ -16,7 +16,7 @@ import {
   bank,
   healthpal,
   hotel,
-  movie,
+  // movie,
   // sportify,
   weather_app,
 } from "@/assets/images";
@@ -65,16 +65,6 @@ export const skillsData = [
 ];
 
 export const projectsData = [
-  {
-    gitLink: "https://github.com/Raymondkingjnr/Netflix-clone",
-    url: "https://netflix-clone-drab-omega.vercel.app/",
-    title: "view Hubs",
-    img: movie,
-    stacks: ["React", "Redux", "Firebase"],
-    des: [
-      "View Hubs is a netflix website clone where users can can browser through movies and series.",
-    ],
-  },
   {
     gitLink: "https://github.com/Raymondkingjnr/Netflix-clone",
     url: "https://annas-secrets.vercel.app/",
