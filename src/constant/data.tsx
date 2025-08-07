@@ -125,7 +125,7 @@ export const projectsData = [
 
 export const mobileApps = [
   {
-    gitLink: "https://github.com/Raymondkingjnr/healthpal",
+    gitLink: "https://github.com/Raymondkingjnr/medic-pal.git",
     url: "/",
     title: "HealthPal",
     img: healthpal,
