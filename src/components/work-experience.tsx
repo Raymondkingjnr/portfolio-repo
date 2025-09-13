@@ -23,7 +23,12 @@ const WorkExperience = () => {
   const fetchWorks = async () => {
     try {
       const working = await client.fetch(workExperienceQuery);
-      setworks(working);
+      setworks(
+        working.map((item: any) => ({
+          ...item,
+          company: item.company === null ? undefined : item.company,
+        }))
+      );
     } catch (error) {
       console.error("error getting jobs", error);
     }
@@ -44,7 +49,7 @@ const WorkExperience = () => {
         </div>
         <div className="mt-[2rem] grid md:grid-cols-2 lg:grid-cols-3 gap-y-[3rem] gap-x-[8rem] justify-between">
           {works.map((experience) => (
-            <PopInSection>
+            <PopInSection key={experience._id}>
               {/* Company */}
               <aside className="flex justify-between items-center">
                 <h1 className="text-base capitalize md:text-lg font-semibold pb-4 darkThemeText">

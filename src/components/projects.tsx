@@ -2,9 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { GithubIcon, Link2Icon, LinkIcon } from "lucide-react";
+import { GithubIcon, Link2Icon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import PopInSection from "./pop-in-section";
 import { defineQuery } from "groq";
 import { Mobileprojects, Project } from "../../sanity.types";

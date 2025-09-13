@@ -8,7 +8,6 @@ import Link from "next/link";
 import PopInSection from "./pop-in-section";
 import DarkModeToggle from "./toggle";
 import { client } from "@/sanity/client";
-import { Resume } from "../../sanity.types";
 
 type ResumeQueryResult = {
   title?: string;
