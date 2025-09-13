@@ -5,10 +5,10 @@ import Giscus from "@giscus/react";
 const GiscusComments = () => {
   return (
     <Giscus
-      repo="Raymondkingjnr/raymonds"
-      repoId="R_kgDOOBnw7Q"
+      repo="Raymondkingjnr/portfolio-repo"
+      repoId="R_kgDOOT830g"
       category="Announcements"
-      categoryId="DIC_kwDOOBnw7c4Cnd_M"
+      categoryId="DIC_kwDOOT830s4CvZ4B"
       mapping="pathname"
       reactionsEnabled="1"
       emitMetadata="0"

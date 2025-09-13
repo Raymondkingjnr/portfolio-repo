@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { devImg } from "@/assets/images";
 import { Button } from "./ui/button";
@@ -6,12 +7,40 @@ import { GitBranchIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
 import Link from "next/link";
 import PopInSection from "./pop-in-section";
 import DarkModeToggle from "./toggle";
+import { client } from "@/sanity/client";
+import { Resume } from "../../sanity.types";
+
+type ResumeQueryResult = {
+  title?: string;
+  url?: string;
+};
+
+const resumeQuery = `*[_type == "resume"][0]{
+  title,
+  "url": file.asset->url
+}`;
+
 const Hero = () => {
+  const [resume, setResume] = useState<ResumeQueryResult>();
+
+  const getResume = async () => {
+    try {
+      const file = await client.fetch(resumeQuery);
+      setResume(file);
+    } catch (error) {
+      console.error("error getting file", error);
+    }
+  };
+
+  useEffect(() => {
+    getResume();
+  }, []);
+
   return (
     <PopInSection className=" max-w-[1600px] relative mx-auto  pt-[0.7rem] px-[1.5rem]">
       <div className="flex justify-between mb-4">
         <Link href="/guest-book" className=" hidden md:block">
-          <Button className=" w-[180px] h-[40px] bg-slate-800 dark:bg-slate-50">
+          <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
             GuestBook
           </Button>
         </Link>
@@ -42,7 +71,7 @@ const Hero = () => {
             and I&apos;m always looking for new challenges.
           </p>
           <Link href="/guest-book" className="block md:hidden mt-3">
-            <Button className=" w-[180px]  h-[40px] bg-slate-800 dark:bg-slate-50">
+            <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
               GuestBook
             </Button>
           </Link>
@@ -77,18 +106,19 @@ const Hero = () => {
               href="mailto:nnajiarinze001@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
+              className=" text-white"
             >
-              <Button className="bg-orange-500 w-[150px] md:w-[180px] h-[40px] cursor-pointer">
+              <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
                 Contact Me
               </Button>
             </a>
             <a
-              href="/Resume.pdf"
+              href={resume?.url}
               download
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="w-[150px] md:w-[180px] h-[40px] bg-slate-800 dark:bg-slate-50">
+              <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
                 Download CV
               </Button>
             </a>

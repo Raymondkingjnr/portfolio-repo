@@ -1,18 +1,47 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { skillsData } from "@/constant/data";
-
 import Marquee from "react-fast-marquee";
 import PopInSection from "./pop-in-section";
+import { defineQuery } from "groq";
+import { Icon } from "../../sanity.types";
+import { client } from "@/sanity/client";
+
+const SkillsIconQuery = defineQuery(`*[_type == "icon"]{
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  _rev,
+  title,
+  svg
+}`);
 
 const Skills = () => {
   const tickerRef = React.useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
 
+  const [icons, setIcons] = useState<Icon[]>([]);
+
+  const fetchWorks = async () => {
+    try {
+      const icon = await client.fetch(SkillsIconQuery);
+      setIcons(
+        icon.map((i: any) => ({
+          ...i,
+          title: i.title ?? undefined,
+          svg: i.svg ?? undefined,
+        }))
+      );
+    } catch (error) {
+      console.error("error getting jobs", error);
+    }
+  };
+
   useEffect(() => {
     const checkDark = () =>
       setIsDark(document.documentElement.classList.contains("dark"));
     checkDark();
+    fetchWorks();
 
     const observer = new MutationObserver(checkDark);
     observer.observe(document.documentElement, {
@@ -37,10 +66,12 @@ const Skills = () => {
         gradientWidth={50}
         className="flex gap-[3rem] items-center justify-between"
       >
-        {skillsData.map((skill, index) => (
-          <div key={index} className=" ml-[2rem]">
-            {skill.img}
-          </div>
+        {icons.map((skill, index) => (
+          <div
+            key={index}
+            className=" ml-[2rem]"
+            dangerouslySetInnerHTML={{ __html: skill?.svg ?? "" }}
+          ></div>
         ))}
       </Marquee>
     </PopInSection>

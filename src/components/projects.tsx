@@ -1,17 +1,83 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { mobileApps, projectsData } from "@/constant/data";
 import { GithubIcon, Link2Icon, LinkIcon } from "lucide-react";
-// import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import PopInSection from "./pop-in-section";
+import { defineQuery } from "groq";
+import { Mobileprojects, Project } from "../../sanity.types";
+import { client } from "@/sanity/client";
+import { urlFor } from "@/sanity/lib/image";
+
+const projectQuery = defineQuery(`*[_type == "project"] {
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  _rev,
+  title,
+  img,
+  gitLink,
+  url,
+  stacks,
+  des
+}`);
+
+const mobileProjectsQuery = defineQuery(`*[_type == "mobileprojects"] {
+   _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  _rev,
+  title,
+  img,
+  gitLink,
+  url,
+  stacks,
+  des
+  }`);
 
 const Projects = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [mobileProject, setMobileProject] = useState<Mobileprojects[]>([]);
   const [active, setActive] = React.useState<"Websites" | "Mobile Apps">(
     "Websites"
   );
+
+  const fetchExercises = async () => {
+    try {
+      const webProject = await client.fetch(projectQuery);
+      // Map title: null to undefined for type compatibility
+      setProjects(
+        webProject.map((project: any) => ({
+          ...project,
+          title: project.title === null ? undefined : project.title,
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching exercies", error);
+    }
+  };
+  const fetchMobile = async () => {
+    try {
+      const mobile = await client.fetch(mobileProjectsQuery);
+      setMobileProject(
+        mobile.map((project: any) => ({
+          ...project,
+          title: project.title === null ? undefined : project.title,
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching exercies", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchExercises();
+    fetchMobile();
+  }, []);
 
   return (
     <div className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]">
@@ -50,56 +116,68 @@ const Projects = () => {
         </div>
       </PopInSection>
       {active === "Websites" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[5rem] gap-y-[2rem]">
-          {projectsData.map((projects, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-content-center place-items-center gap-x-[5rem] gap-y-[2rem]">
+          {projects.map((projects) => (
             <PopInSection
-              key={index}
-              className="mt-[1rem] md:min-w-[340px] lg:min-w-[400px]"
+              className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden w-full"
+              key={projects._id}
             >
-              <h2 className="font-semibold text-lg capitalize darkThemeText">
-                {projects.title}
-              </h2>
-              {/* <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
+              {/* Image */}
+              <div className="relative w-full h-[170px] md:h-[260px]">
                 <Image
-                  src={projects.img}
-                  width={300}
-                  height={300}
-                  alt={projects.title}
-                  className="w-full h-full object-cover"
+                  src={
+                    projects?.img?.asset?._ref ?
+                      urlFor(projects.img).url()
+                    : "/placeholder.png"
+                  }
+                  alt={projects.title ?? ""}
+                  fill
+                  className="object-cover"
                 />
-              </div> */}
-              <span className="flex gap-[1rem] py-3">
-                <a
-                  href={projects.gitLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="h-[27px] w-[37px] bg-orange-500 rounded grid place-content-around"
-                >
-                  {" "}
-                  <GithubIcon size={15} />
-                </a>
-                {/* */}
-                <a
-                  href={projects.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="h-[27px] w-[37px] bg-orange-500 rounded grid place-content-around"
-                >
-                  <Link2Icon size={15} />
-                </a>
-                {/*  */}
-              </span>
-
-              <div className="flex flex-wrap  gap-[0.76rem] font-semibold mt-4">
-                {projects.stacks?.map((items, index) => (
-                  <p key={index} className="darkThemeText leading-[1rem] ">
-                    {items}
-                  </p>
-                ))}
               </div>
-              <p className=" text-sm font-normal leading-[1.5rem] pt-3.5 darkThemeText">
-                {projects.des}
-              </p>
+
+              {/* Content */}
+              <div className="p-5">
+                <h2 className="text-xl font-semibold flex items-center gap-2 darkThemeText">
+                  {projects.title}
+                </h2>
+
+                <p className="text-sm text-neutral-500 mt-2 line-clamp-2">
+                  {projects.des}
+                </p>
+
+                {/* Stacks */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {projects.stacks?.map((item, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-full darkThemeText"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-3 mt-5">
+                  <a
+                    href={projects.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90"
+                  >
+                    Open Live Link
+                  </a>
+                  <a
+                    href={projects.gitLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-xl grid place-content-center"
+                  >
+                    <GithubIcon size={18} />
+                  </a>
+                </div>
+              </div>
             </PopInSection>
           ))}
         </div>
@@ -108,52 +186,67 @@ const Projects = () => {
       {active === "Mobile Apps" && (
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[5rem] gap-y-[2rem]">
-            {mobileApps.map((projects, index) => (
+            {mobileProject.map((projects) => (
               <PopInSection
-                key={index}
-                className="mt-[1rem] md:min-w-[340px] lg:min-w-[400px]"
+                className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden w-full"
+                key={projects._id}
               >
-                <h2 className="font-medium md:font-semibold text-xl capitalize darkThemeText">
-                  {projects.title}
-                </h2>
-                {/* <div className="w-full h-[200px] md:h-[300px] lg:h-[350px] mt-3 rounded overflow-hidden relative">
+                {/* Image */}
+                <div className="relative w-full h-[170px] md:h-[260px]">
                   <Image
-                    src={projects.img}
-                    width={300}
-                    height={300}
-                    alt={projects.title}
-                    className="w-full h-full object-cover"
+                    src={
+                      projects?.img?.asset?._ref ?
+                        urlFor(projects.img).url()
+                      : "/placeholder.png"
+                    }
+                    alt={projects.title ?? ""}
+                    fill
+                    className="object-cover"
                   />
-                </div> */}
-                <span className="flex gap-[1rem] py-3">
-                  <a
-                    href={projects.gitLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="h-[27px] w-[37px] bg-orange-500 rounded grid place-content-around"
-                  >
-                    {" "}
-                    <GithubIcon size={15} />
-                  </a>
-                  {/* */}
-                  <Link
-                    href={projects.url}
-                    className="h-[27px] w-[37px] bg-orange-500 rounded grid place-content-around"
-                  >
-                    <LinkIcon size={15} />
-                  </Link>
-                  {/*  */}
-                </span>
-                <div className="flex flex-wrap  gap-[0.76rem] mt-3 font-semibold">
-                  {projects.stacks?.map((items, index) => (
-                    <p key={index} className="darkThemeText">
-                      {items}
-                    </p>
-                  ))}
                 </div>
-                <p className=" darkThemeText text-sm font-normal leading-[1.3rem]">
-                  {projects.des}
-                </p>
+
+                {/* Content */}
+                <div className="p-5">
+                  <h2 className="text-xl font-semibold flex items-center gap-2 darkThemeText">
+                    {projects.title}
+                  </h2>
+
+                  <p className="text-sm text-neutral-500 mt-2 line-clamp-2">
+                    {projects.des}
+                  </p>
+
+                  {/* Stacks */}
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {projects.stacks?.map((item, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-full darkThemeText"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="flex gap-3 mt-5">
+                    <a
+                      href={projects.gitLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90"
+                    >
+                      Get In Touch
+                    </a>
+                    <a
+                      href={projects.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-xl grid place-content-center"
+                    >
+                      <Link2Icon size={18} />
+                    </a>
+                  </div>
+                </div>
               </PopInSection>
             ))}
           </div>
@@ -166,7 +259,7 @@ const Projects = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Button className="bg-orange-500 w-[200px] h-[50px] cursor-pointer">
+          <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
             More
           </Button>
         </a>
