@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { GithubIcon, Link2Icon } from "lucide-react";
+import { GithubIcon } from "lucide-react";
 import Image from "next/image";
 import PopInSection from "./pop-in-section";
 import { defineQuery } from "groq";
@@ -44,6 +44,7 @@ const Projects = () => {
   const [active, setActive] = React.useState<"Websites" | "Mobile Apps">(
     "Websites"
   );
+  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
 
   const fetchExercises = async () => {
     try {
@@ -56,7 +57,7 @@ const Projects = () => {
         }))
       );
     } catch (error) {
-      console.error("Error fetching exercies", error);
+      console.error("Error fetching projects", error);
     }
   };
   const fetchMobile = async () => {
@@ -69,7 +70,7 @@ const Projects = () => {
         }))
       );
     } catch (error) {
-      console.error("Error fetching exercies", error);
+      console.error("Error fetching projects", error);
     }
   };
 
@@ -78,14 +79,18 @@ const Projects = () => {
     fetchMobile();
   }, []);
 
+  const toggleExpand = (id: string) => {
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   return (
     <div className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]">
-      <PopInSection className="w-fit">
+      <div className=" w-fit">
         <h3 className="text-lg md:text-xl font-semibold capitalize darkThemeText">
           projects
         </h3>
         <div className="h-[2px] w-full mt-1 bg-[#B0BEC5]" />
-      </PopInSection>
+      </div>
       <PopInSection className=" flex items-center gap-5 mt-6 mb-5">
         <div
           className="flex items-center gap-1.5"
@@ -141,9 +146,19 @@ const Projects = () => {
                   {projects.title}
                 </h2>
 
-                <p className="text-sm text-neutral-500 mt-2 line-clamp-2">
+                <p
+                  className={`text-sm text-neutral-500 mt-2 ${
+                    expanded[projects._id] ? "" : "line-clamp-2"
+                  }`}
+                >
                   {projects.des}
                 </p>
+                <button
+                  onClick={() => toggleExpand(projects._id)}
+                  className="text-blue-100 italic text-sm mt-1"
+                >
+                  {expanded[projects._id] ? "Show less" : "Read more"}
+                </button>
 
                 {/* Stacks */}
                 <div className="flex flex-wrap gap-2 mt-4">
@@ -165,7 +180,7 @@ const Projects = () => {
                     rel="noopener noreferrer"
                     className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90"
                   >
-                    Open Live Link
+                    open live link
                   </a>
                   <a
                     href={projects.gitLink}
@@ -210,9 +225,19 @@ const Projects = () => {
                     {projects.title}
                   </h2>
 
-                  <p className="text-sm text-neutral-500 mt-2 line-clamp-2">
+                  <p
+                    className={`text-sm text-neutral-500 mt-2 ${
+                      expanded[projects._id] ? "" : "line-clamp-2"
+                    }`}
+                  >
                     {projects.des}
                   </p>
+                  <button
+                    onClick={() => toggleExpand(projects._id)}
+                    className="text-blue-100 italic text-sm mt-1"
+                  >
+                    {expanded[projects._id] ? "Show less" : "Read more"}
+                  </button>
 
                   {/* Stacks */}
                   <div className="flex flex-wrap gap-2 mt-4">
@@ -229,20 +254,20 @@ const Projects = () => {
                   {/* Buttons */}
                   <div className="flex gap-3 mt-5">
                     <a
-                      href={projects.gitLink}
+                      href={projects.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90"
                     >
-                      Get In Touch
+                      open live link
                     </a>
                     <a
-                      href={projects.url}
+                      href={projects.gitLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-xl grid place-content-center"
                     >
-                      <Link2Icon size={18} />
+                      <GithubIcon size={18} />
                     </a>
                   </div>
                 </div>
