@@ -9,6 +9,13 @@ import { defineQuery } from "groq";
 import { Mobileprojects, Project } from "../../sanity.types";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/lib/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const projectQuery = defineQuery(`*[_type == "project"] {
   _id,
@@ -34,6 +41,7 @@ const mobileProjectsQuery = defineQuery(`*[_type == "mobileprojects"] {
   img,
   gitLink,
   url,
+  images,
   stacks,
   des
   }`);
@@ -82,6 +90,8 @@ const Projects = () => {
   const toggleExpand = (id: string) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
+
+  console.log(mobileProject);
 
   return (
     <div className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]">
@@ -206,17 +216,71 @@ const Projects = () => {
                 key={projects._id}
               >
                 {/* Image */}
-                <div className="relative w-full h-[170px] md:h-[260px]">
-                  <Image
-                    src={
-                      projects?.img?.asset?._ref ?
-                        urlFor(projects.img).url()
-                      : "/placeholder.png"
-                    }
-                    alt={projects.title ?? ""}
-                    fill
-                    className="object-cover"
-                  />
+                <div className="relative">
+                  <Carousel
+                    className="relative h-[270px] md:h-[330px] w-full"
+                    opts={{}}
+                  >
+                    <CarouselContent>
+                      {projects.images?.map((item, index) => (
+                        <CarouselItem
+                          key={item._key ?? item.asset?._ref ?? index}
+                          className="relative w-full h-full"
+                        >
+                          {item?.asset?._ref ?
+                            <img
+                              src={urlFor(item).url()}
+                              alt={`${projects.title ?? ""} - Image ${index + 1}`}
+                              className="object-cover w-full h-full"
+                            />
+                          : <img
+                              src="/placeholder.png"
+                              alt={`${projects.title ?? ""} - placeholder`}
+                              className="object-cover w-full h-full"
+                            />
+                          }
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+
+                    {/* Left arrow (previous) - vertically centered, horizontally near left edge */}
+                    <CarouselPrevious className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText">
+                      {/* <div className="w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white rounded-full grid place-items-center hover:bg-black/60">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="w-5 h-5"
+                          aria-hidden="true"
+                        >
+                          <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                      </div> */}
+                    </CarouselPrevious>
+
+                    {/* Right arrow (next) - vertically centered, horizontally near right edge */}
+                    <CarouselNext className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText">
+                      {/* <div className="w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white rounded-full grid place-items-center hover:bg-black/60">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="w-5 h-5"
+                          aria-hidden="true"
+                        >
+                          <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                      </div> */}
+                    </CarouselNext>
+                  </Carousel>
                 </div>
 
                 {/* Content */}
