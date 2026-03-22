@@ -2,46 +2,21 @@
 import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import PopInSection from "./pop-in-section";
-import { defineQuery } from "groq";
-import { Icon } from "../../sanity.types";
-import { client } from "@/sanity/client";
+import {useSkills} from "@/hooks/get-skills";
 
-const SkillsIconQuery = defineQuery(`*[_type == "icon"]{
-  _id,
-  _type,
-  _createdAt,
-  _updatedAt,
-  _rev,
-  title,
-  svg
-}`);
 
 const Skills = () => {
   const tickerRef = React.useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
 
-  const [icons, setIcons] = useState<Icon[]>([]);
+  const {data: icons} = useSkills()
 
-  const fetchWorks = async () => {
-    try {
-      const icon = await client.fetch(SkillsIconQuery);
-      setIcons(
-        icon.map((i: any) => ({
-          ...i,
-          title: i.title ?? undefined,
-          svg: i.svg ?? undefined,
-        }))
-      );
-    } catch (error) {
-      console.error("error getting jobs", error);
-    }
-  };
+
 
   useEffect(() => {
     const checkDark = () =>
       setIsDark(document.documentElement.classList.contains("dark"));
     checkDark();
-    fetchWorks();
 
     const observer = new MutationObserver(checkDark);
     observer.observe(document.documentElement, {
@@ -52,7 +27,7 @@ const Skills = () => {
   }, []);
 
   return (
-    <PopInSection className=" mt-[4rem] px-[0]">
+    <PopInSection className=" mt-18 px-0">
       <Marquee
         pauseOnHover={true}
         autoFill={true}
@@ -64,12 +39,12 @@ const Skills = () => {
         gradient={true}
         gradientColor={isDark ? "#060505" : "#fff"}
         gradientWidth={50}
-        className="flex gap-[3rem] items-center justify-between"
+        className="flex gap-12 items-center justify-between"
       >
-        {icons.map((skill, index) => (
+        {icons?.map((skill, index) => (
           <div
             key={index}
-            className=" ml-[2rem]"
+            className=" ml-8"
             dangerouslySetInnerHTML={{ __html: skill?.svg ?? "" }}
           ></div>
         ))}

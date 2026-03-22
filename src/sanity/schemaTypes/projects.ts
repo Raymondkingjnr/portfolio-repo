@@ -30,6 +30,19 @@ export const projectTypes = defineType({
       },
     },
     {
+      name: "images",
+      title: "Project Images",
+      type: "array",
+      of: [
+        {
+          type: "image",
+          options: {
+            hotspot: true,
+          },
+        },
+      ],
+    },
+    {
       name: "stacks",
       title: "Tech Stacks",
       type: "array",

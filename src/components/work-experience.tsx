@@ -1,54 +1,25 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import PopInSection from "./pop-in-section";
-import { defineQuery } from "groq";
-import { Work } from "../../sanity.types";
-import { client } from "@/sanity/client";
 
-const workExperienceQuery = defineQuery(`*[_type == "work"] {
-  _id,
-  _type,
-  _createdAt,
-  _updatedAt,
-  _rev,
-  company,
-  icon,
-  role,
-  responsibilities,
-}`);
+import React from "react";
+import PopInSection from "./pop-in-section";
+import {useWorkExperience} from "@/hooks/get-work-experience";
+
 
 const WorkExperience = () => {
-  const [works, setworks] = useState<Work[]>([]);
 
-  const fetchWorks = async () => {
-    try {
-      const working = await client.fetch(workExperienceQuery);
-      setworks(
-        working.map((item: any) => ({
-          ...item,
-          company: item.company === null ? undefined : item.company,
-        }))
-      );
-    } catch (error) {
-      console.error("error getting jobs", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchWorks();
-  }, []);
+  const {data: works} = useWorkExperience();
 
   return (
     <div className="">
-      <div className="max-w-[1600px] mx-auto py-[5rem] px-[1.5rem]">
+      <div className="max-w-[1600px] mx-auto py-20 px-6">
         <div className="w-fit">
           <h3 className="text-lg md:text-xl darkThemeText font-semibold">
             Work Experience
           </h3>
-          <div className="h-[2px] w-full mt-1 bg-[#B0BEC5]" />
+          <div className="h-0.5 w-full mt-1 bg-[#B0BEC5]" />
         </div>
-        <div className="mt-[2rem] grid md:grid-cols-2 lg:grid-cols-3 gap-y-[3rem] gap-x-[8rem] justify-between">
-          {works.map((experience) => (
+        <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-32 justify-between">
+          {works?.map((experience) => (
             <PopInSection key={experience._id}>
               {/* Company */}
               <aside className="flex justify-between items-center">
@@ -75,7 +46,7 @@ const WorkExperience = () => {
                       {/* Line (hide for last item) */}
                       {experience.responsibilities &&
                         index !== experience.responsibilities.length - 1 && (
-                          <div className="h-[60px] w-[1px] bg-orange-500" />
+                          <div className="h-[60px] w-px bg-orange-500" />
                         )}
                     </div>
 

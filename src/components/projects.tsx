@@ -1,13 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Button } from "./ui/button";
 import { GithubIcon } from "lucide-react";
 import Image from "next/image";
 import PopInSection from "./pop-in-section";
-import { defineQuery } from "groq";
-import { Mobileprojects, Project } from "../../sanity.types";
-import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/lib/image";
 import {
   Carousel,
@@ -16,90 +13,31 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import {useProjects, useMobileProjects} from "@/hooks/get-projects";
 
-const projectQuery = defineQuery(`*[_type == "project"] {
-  _id,
-  _type,
-  _createdAt,
-  _updatedAt,
-  _rev,
-  title,
-  img,
-  gitLink,
-  url,
-  stacks,
-  des
-}`);
 
-const mobileProjectsQuery = defineQuery(`*[_type == "mobileprojects"] {
-   _id,
-  _type,
-  _createdAt,
-  _updatedAt,
-  _rev,
-  title,
-  img,
-  gitLink,
-  url,
-  images,
-  stacks,
-  des
-  }`);
 
 const Projects = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [mobileProject, setMobileProject] = useState<Mobileprojects[]>([]);
   const [active, setActive] = React.useState<"Websites" | "Mobile Apps">(
     "Websites"
   );
   const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
 
-  const fetchExercises = async () => {
-    try {
-      const webProject = await client.fetch(projectQuery);
-      // Map title: null to undefined for type compatibility
-      setProjects(
-        webProject.map((project: any) => ({
-          ...project,
-          title: project.title === null ? undefined : project.title,
-        }))
-      );
-    } catch (error) {
-      console.error("Error fetching projects", error);
-    }
-  };
-  const fetchMobile = async () => {
-    try {
-      const mobile = await client.fetch(mobileProjectsQuery);
-      setMobileProject(
-        mobile.map((project: any) => ({
-          ...project,
-          title: project.title === null ? undefined : project.title,
-        }))
-      );
-    } catch (error) {
-      console.error("Error fetching projects", error);
-    }
-  };
+  const {data: projects}= useProjects();
+  const {data: mobile}= useMobileProjects();
 
-  useEffect(() => {
-    fetchExercises();
-    fetchMobile();
-  }, []);
 
   const toggleExpand = (id: string) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  console.log(mobileProject);
-
   return (
-    <div className="max-w-[1600px] px-[1.5rem] mx-auto pb-[3rem]">
+    <div className="max-w-[1600px] px-6 mx-auto pb-12">
       <div className=" w-fit">
         <h3 className="text-lg md:text-xl font-semibold capitalize darkThemeText">
           projects
         </h3>
-        <div className="h-[2px] w-full mt-1 bg-[#B0BEC5]" />
+        <div className="h-0.5 w-full mt-1 bg-[#B0BEC5]" />
       </div>
       <PopInSection className=" flex items-center gap-5 mt-6 mb-5">
         <div
@@ -115,7 +53,7 @@ const Projects = () => {
           </h3>
         </div>
         {/*  */}
-        <div className=" h-7 w-[2px] bg-white" />
+        <div className=" h-7 w-0.5 bg-white" />
         {/*  */}
         <div
           className="flex items-center gap-1.5"
@@ -129,27 +67,52 @@ const Projects = () => {
           </h3>
         </div>
       </PopInSection>
+
       {active === "Websites" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-content-center place-items-center gap-x-[5rem] gap-y-[2rem]">
-          {projects.map((projects) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-content-center place-items-center gap-x-20 gap-y-8">
+          {projects?.map((projects) => (
             <PopInSection
               className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden w-full"
               key={projects._id}
             >
               {/* Image */}
-              <div className="relative w-full h-[170px] md:h-[260px]">
-                <Image
-                  src={
-                    projects?.img?.asset?._ref ?
-                      urlFor(projects.img).url()
-                    : "/placeholder.png"
-                  }
-                  alt={projects.title ?? ""}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <div className="relative">
+                <Carousel
+                    className="relative h-[270px] md:h-[330px] w-full"
+                    opts={{}}
+                >
+                  <CarouselContent>
+                    {projects.images?.map((item, index) => (
+                        <CarouselItem
+                            key={item._key ?? item.asset?._ref ?? index}
+                            className="relative w-full h-full"
+                        >
+                          {item?.asset?._ref ?
+                              <Image
+                                  src={urlFor(item).url()}
+                                  alt={`${projects.title ?? ""} - Image ${index + 1}`}
+                                  className="object-cover w-full h-full"
+                                  width={1000}
+                                  height={1000}
+                              />
+                              : <Image
+                                  src="/placeholder.png"
+                                  alt={`${projects.title ?? ""} - placeholder`}
+                                  className="object-cover w-full h-full"
+                                  width={1000}
+                                  height={1000}
+                              />
+                          }
+                        </CarouselItem>
+                    ))}
+                  </CarouselContent>
 
+                  <CarouselPrevious className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
+
+                  <CarouselNext className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
+
+                </Carousel>
+              </div>
               {/* Content */}
               <div className="p-5">
                 <h2 className="text-xl font-semibold flex items-center gap-2 darkThemeText">
@@ -209,8 +172,8 @@ const Projects = () => {
 
       {active === "Mobile Apps" && (
         <div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[5rem] gap-y-[2rem]">
-            {mobileProject.map((projects) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8">
+            {mobile?.map((projects) => (
               <PopInSection
                 className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden w-full"
                 key={projects._id}
@@ -228,15 +191,19 @@ const Projects = () => {
                           className="relative w-full h-full"
                         >
                           {item?.asset?._ref ?
-                            <img
+                            <Image
                               src={urlFor(item).url()}
                               alt={`${projects.title ?? ""} - Image ${index + 1}`}
                               className="object-cover w-full h-full"
+                              width={1000}
+                              height={1000}
                             />
-                          : <img
+                          : <Image
                               src="/placeholder.png"
                               alt={`${projects.title ?? ""} - placeholder`}
                               className="object-cover w-full h-full"
+                              width={1000}
+                              height={1000}
                             />
                           }
                         </CarouselItem>
@@ -244,42 +211,11 @@ const Projects = () => {
                     </CarouselContent>
 
                     {/* Left arrow (previous) - vertically centered, horizontally near left edge */}
-                    <CarouselPrevious className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText">
-                      {/* <div className="w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white rounded-full grid place-items-center hover:bg-black/60">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-5 h-5"
-                          aria-hidden="true"
-                        >
-                          <polyline points="15 18 9 12 15 6" />
-                        </svg>
-                      </div> */}
-                    </CarouselPrevious>
+                    <CarouselPrevious className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
 
                     {/* Right arrow (next) - vertically centered, horizontally near right edge */}
-                    <CarouselNext className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText">
-                      {/* <div className="w-10 h-10 md:w-12 md:h-12 bg-black/40 text-white rounded-full grid place-items-center hover:bg-black/60">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="w-5 h-5"
-                          aria-hidden="true"
-                        >
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </div> */}
-                    </CarouselNext>
+                    <CarouselNext className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
+
                   </Carousel>
                 </div>
 

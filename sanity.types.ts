@@ -65,6 +65,22 @@ export type Work = {
   responsibilities?: Array<string>;
 };
 
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type Mobileprojects = {
   _id: string;
   _type: "mobileprojects";
@@ -124,6 +140,19 @@ export type Project = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  images?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
   stacks?: Array<string>;
   des?: Array<string>;
 };
@@ -154,20 +183,15 @@ export type SanityImageDimensions = {
   aspectRatio?: number;
 };
 
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+export type SanityImageMetadata = {
+  _type: "sanity.imageMetadata";
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
 };
 
 export type SanityFileAsset = {
@@ -190,6 +214,13 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
 };
 
 export type SanityImageAsset = {
@@ -215,17 +246,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
-
 export type Geopoint = {
   _type: "geopoint";
   lat?: number;
@@ -239,14 +259,7 @@ export type Slug = {
   source?: string;
 };
 
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
-export type AllSanitySchemaTypes = Resume | Icon | Work | Mobileprojects | Project | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Resume | Icon | Work | SanityImageCrop | SanityImageHotspot | Mobileprojects | Project | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/components/projects.tsx
 // Variable: projectQuery
@@ -276,7 +289,7 @@ export type ProjectQueryResult = Array<{
   des: Array<string> | null;
 }>;
 // Variable: mobileProjectsQuery
-// Query: *[_type == "mobileprojects"] {   _id,  _type,  _createdAt,  _updatedAt,  _rev,  title,  img,  gitLink,  url,  stacks,  des  }
+// Query: *[_type == "mobileprojects"] {   _id,  _type,  _createdAt,  _updatedAt,  _rev,  title,  img,  gitLink,  url,  images,  stacks,  des  }
 export type MobileProjectsQueryResult = Array<{
   _id: string;
   _type: "mobileprojects";
@@ -298,6 +311,19 @@ export type MobileProjectsQueryResult = Array<{
   } | null;
   gitLink: string | null;
   url: string | null;
+  images: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }> | null;
   stacks: Array<string> | null;
   des: Array<string> | null;
 }>;
@@ -346,7 +372,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"project\"] {\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  img,\n  gitLink,\n  url,\n  stacks,\n  des\n}": ProjectQueryResult;
-    "*[_type == \"mobileprojects\"] {\n   _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  img,\n  gitLink,\n  url,\n  stacks,\n  des\n  }": MobileProjectsQueryResult;
+    "*[_type == \"mobile_projects\"] {\n   _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  img,\n  gitLink,\n  url,\n  images,\n  stacks,\n  des\n  }": MobileProjectsQueryResult;
     "*[_type == \"icon\"]{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  svg\n}": SkillsIconQueryResult;
     "*[_type == \"work\"] {\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  company,\n  icon,\n  role,\n  responsibilities,\n}": WorkExperienceQueryResult;
   }
