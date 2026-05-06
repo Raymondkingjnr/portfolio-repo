@@ -36,14 +36,14 @@ const Hero = () => {
   }, []);
 
   return (
-    <PopInSection className=" max-w-[1600px] relative mx-auto  pt-[0.7rem] px-[1.5rem]">
+    <PopInSection className=" max-w-[1600px] relative mx-auto  pt-[0.7rem] px-6">
       <div className="flex justify-between mb-4">
         <Link href="/guest-book" className=" hidden md:block">
           <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
             GuestBook
           </Button>
         </Link>
-        <div className=" fixed right-[1rem] top-[1rem] z-50">
+        <div className=" fixed right-4 top-4 z-50">
           <DarkModeToggle />
         </div>
       </div>
@@ -100,7 +100,7 @@ const Hero = () => {
               <LinkedinIcon className=" cursor-pointer" />
             </a>
           </div>
-          <div className="flex my-5 gap-[10px] justify-center items-center ">
+          <div className="flex my-5 gap-2.5 justify-center items-center ">
             <a
               href="mailto:nnajiarinze001@gmail.com"
               target="_blank"

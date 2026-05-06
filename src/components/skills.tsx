@@ -2,16 +2,14 @@
 import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import PopInSection from "./pop-in-section";
-import {useSkills} from "@/hooks/get-skills";
-
+import { useSkills } from "@/hooks/get-skills";
+import { log } from "console";
 
 const Skills = () => {
   const tickerRef = React.useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
 
-  const {data: icons} = useSkills()
-
-
+  const { data: icons } = useSkills();
 
   useEffect(() => {
     const checkDark = () =>
@@ -34,7 +32,7 @@ const Skills = () => {
         ref={tickerRef}
         speed={30}
         style={{
-          height: "60px",
+          height: "90px",
         }}
         gradient={true}
         gradientColor={isDark ? "#060505" : "#fff"}
@@ -42,13 +40,23 @@ const Skills = () => {
         className="flex gap-12 items-center justify-between"
       >
         {icons?.map((skill, index) => (
-          <div
-            key={index}
-            className=" ml-8"
-            dangerouslySetInnerHTML={{ __html: skill?.svg ?? "" }}
-          ></div>
+          <>
+            <div
+              key={index}
+              className=" ml-8"
+              dangerouslySetInnerHTML={{ __html: skill?.svg ?? "" }}
+            ></div>
+          </>
         ))}
       </Marquee>
+      {/* {icons?.map((skill) => (
+        <div key={skill._id}>
+          <p className="text-xl font-semibold flex items-center gap-2 darkThemeText">
+            {" "}
+            {skill.title}
+          </p>
+        </div>
+      ))} */}
     </PopInSection>
   );
 };

@@ -81,6 +81,20 @@ export type SanityImageHotspot = {
   width?: number;
 };
 
+export type Api = {
+  _id: string;
+  _type: "api";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  description?: string;
+  stacks?: Array<string>;
+  features?: Array<string>;
+  readMeUrl?: string;
+  hostUrl?: string;
+};
+
 export type Mobileprojects = {
   _id: string;
   _type: "mobileprojects";
@@ -259,11 +273,11 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Resume | Icon | Work | SanityImageCrop | SanityImageHotspot | Mobileprojects | Project | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Resume | Icon | Work | SanityImageCrop | SanityImageHotspot | Api | Mobileprojects | Project | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./src/components/projects.tsx
+// Source: ./src/api/projects-api.ts
 // Variable: projectQuery
-// Query: *[_type == "project"] {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  title,  img,  gitLink,  url,  stacks,  des}
+// Query: *[_type == "project"] {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  title,  img,  images,  gitLink,  url,  stacks,  des}
 export type ProjectQueryResult = Array<{
   _id: string;
   _type: "project";
@@ -283,6 +297,19 @@ export type ProjectQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
+  images: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }> | null;
   gitLink: string | null;
   url: string | null;
   stacks: Array<string> | null;
@@ -328,7 +355,7 @@ export type MobileProjectsQueryResult = Array<{
   des: Array<string> | null;
 }>;
 
-// Source: ./src/components/skills.tsx
+// Source: ./src/api/skills-api.ts
 // Variable: SkillsIconQuery
 // Query: *[_type == "icon"]{  _id,  _type,  _createdAt,  _updatedAt,  _rev,  title,  svg}
 export type SkillsIconQueryResult = Array<{
@@ -341,7 +368,7 @@ export type SkillsIconQueryResult = Array<{
   svg: string | null;
 }>;
 
-// Source: ./src/components/work-experience.tsx
+// Source: ./src/api/work-experience-api.ts
 // Variable: workExperienceQuery
 // Query: *[_type == "work"] {  _id,  _type,  _createdAt,  _updatedAt,  _rev,  company,  icon,  role,  responsibilities,}
 export type WorkExperienceQueryResult = Array<{
@@ -371,8 +398,8 @@ export type WorkExperienceQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"project\"] {\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  img,\n  gitLink,\n  url,\n  stacks,\n  des\n}": ProjectQueryResult;
-    "*[_type == \"mobile_projects\"] {\n   _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  img,\n  gitLink,\n  url,\n  images,\n  stacks,\n  des\n  }": MobileProjectsQueryResult;
+    "*[_type == \"project\"] {\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  img,\n  images,\n  gitLink,\n  url,\n  stacks,\n  des\n}": ProjectQueryResult;
+    "*[_type == \"mobileprojects\"] {\n   _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  img,\n  gitLink,\n  url,\n  images,\n  stacks,\n  des\n  }": MobileProjectsQueryResult;
     "*[_type == \"icon\"]{\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  title,\n  svg\n}": SkillsIconQueryResult;
     "*[_type == \"work\"] {\n  _id,\n  _type,\n  _createdAt,\n  _updatedAt,\n  _rev,\n  company,\n  icon,\n  role,\n  responsibilities,\n}": WorkExperienceQueryResult;
   }
