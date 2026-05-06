@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import PopInSection from "./pop-in-section";
 import { useSkills } from "@/hooks/get-skills";
-import { log } from "console";
 
 const Skills = () => {
   const tickerRef = React.useRef<HTMLDivElement>(null);
