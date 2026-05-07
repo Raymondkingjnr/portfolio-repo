@@ -2,12 +2,15 @@
 
 import React from "react";
 import PopInSection from "./pop-in-section";
-import {useWorkExperience} from "@/hooks/get-work-experience";
-
+import { useWorkExperience } from "@/hooks/get-work-experience";
+import { WorkExperienceSkeleton } from "./loading-sections";
 
 const WorkExperience = () => {
+  const { data: works, isLoading } = useWorkExperience();
 
-  const {data: works} = useWorkExperience();
+  if (isLoading) {
+    return <WorkExperienceSkeleton />;
+  }
 
   return (
     <div className="">
@@ -46,7 +49,7 @@ const WorkExperience = () => {
                       {/* Line (hide for last item) */}
                       {experience.responsibilities &&
                         index !== experience.responsibilities.length - 1 && (
-                          <div className="h-[60px] w-px bg-orange-500" />
+                          <div className="h-15 w-px bg-orange-500" />
                         )}
                     </div>
 

@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import PopInSection from "./pop-in-section";
 import { useSkills } from "@/hooks/get-skills";
+import { SkillsSkeleton } from "./loading-sections";
 
 const Skills = () => {
   const tickerRef = React.useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
 
-  const { data: icons } = useSkills();
+  const { data: icons, isLoading } = useSkills();
 
   useEffect(() => {
     const checkDark = () =>
@@ -22,6 +23,10 @@ const Skills = () => {
     });
     return () => observer.disconnect();
   }, []);
+
+  if (isLoading) {
+    return <SkillsSkeleton />;
+  }
 
   return (
     <PopInSection className=" mt-18 px-0">
@@ -39,13 +44,11 @@ const Skills = () => {
         className="flex gap-12 items-center justify-between"
       >
         {icons?.map((skill, index) => (
-          <>
-            <div
-              key={index}
-              className=" ml-8"
-              dangerouslySetInnerHTML={{ __html: skill?.svg ?? "" }}
-            ></div>
-          </>
+          <div
+            key={skill._id ?? index}
+            className=" ml-8"
+            dangerouslySetInnerHTML={{ __html: skill?.svg ?? "" }}
+          ></div>
         ))}
       </Marquee>
       {/* {icons?.map((skill) => (
