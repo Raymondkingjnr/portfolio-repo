@@ -8,6 +8,7 @@ import Link from "next/link";
 import PopInSection from "./pop-in-section";
 import DarkModeToggle from "./toggle";
 import { client } from "@/sanity/client";
+import { ResumeButtonSkeleton } from "./loading-sections";
 
 type ResumeQueryResult = {
   title?: string;
@@ -21,6 +22,7 @@ const resumeQuery = `*[_type == "resume"][0]{
 
 const Hero = () => {
   const [resume, setResume] = useState<ResumeQueryResult>();
+  const [isResumeLoading, setIsResumeLoading] = useState(true);
 
   const getResume = async () => {
     try {
@@ -28,6 +30,8 @@ const Hero = () => {
       setResume(file);
     } catch (error) {
       console.error("error getting file", error);
+    } finally {
+      setIsResumeLoading(false);
     }
   };
 
@@ -36,7 +40,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <PopInSection className=" max-w-[1600px] relative mx-auto  pt-[0.7rem] px-6">
+    <PopInSection className=" max-w-400 relative mx-auto  pt-[0.7rem] px-6">
       <div className="flex justify-between mb-4">
         <Link href="/guest-book" className=" hidden md:block">
           <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
@@ -50,7 +54,7 @@ const Hero = () => {
       <div className=" grid place-content-center text-center">
         <main>
           <div className="grid place-content-center ">
-            <div className="w-[150px] h-[150px] rounded-full overflow-hidden">
+            <div className="w-37.5 h-37.5 rounded-full overflow-hidden">
               <Image
                 src={devImg}
                 alt=""
@@ -111,16 +115,19 @@ const Hero = () => {
                 Contact Me
               </Button>
             </a>
-            <a
-              href={resume?.url}
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
-                Download CV
-              </Button>
-            </a>
+            {isResumeLoading ?
+              <ResumeButtonSkeleton />
+            : <a
+                href={resume?.url}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
+                  Download CV
+                </Button>
+              </a>
+            }
           </div>
         </main>
       </div>
