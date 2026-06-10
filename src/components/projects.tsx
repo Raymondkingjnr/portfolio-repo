@@ -32,9 +32,9 @@ const Projects = () => {
   };
 
   return (
-    <div className="max-w-400 px-6 mx-auto pb-12">
+    <div className="max-w-400 px-3 mx-auto pb-12">
       <div className=" w-fit">
-        <h3 className="text-lg md:text-xl font-semibold capitalize darkThemeText">
+        <h3 className="text-base font-semibold capitalize darkThemeText">
           projects
         </h3>
         {/* <div className="h-0.5 w-full mt-1 bg-[#B0BEC5]" /> */}
@@ -47,7 +47,7 @@ const Projects = () => {
           {active === "Websites" && (
             <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
           )}
-          <h3 className="font-semibold cursor-pointer text-base darkThemeText">
+          <h3 className="font-semibold cursor-pointer text-sm darkThemeText">
             {" "}
             Websites
           </h3>
@@ -62,7 +62,7 @@ const Projects = () => {
           {active === "Mobile Apps" && (
             <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
           )}
-          <h3 className="font-semibold cursor-pointer text-base darkThemeText">
+          <h3 className="font-semibold cursor-pointer text-sm darkThemeText">
             Mobile Apps
           </h3>
         </div>
@@ -75,7 +75,7 @@ const Projects = () => {
           {active === "APIs" && (
             <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
           )}
-          <h3 className="font-semibold cursor-pointer text-base darkThemeText">
+          <h3 className="font-semibold cursor-pointer text-sm darkThemeText">
             APIs
           </h3>
         </div>
@@ -83,164 +83,35 @@ const Projects = () => {
 
       {active === "Websites" &&
         (isProjectsLoading ?
-          <ProjectCardsSkeleton />
+          <ProjectCardsSkeleton withImage={false} />
         : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-content-center place-items-center gap-x-20 gap-y-8">
             {projects?.map((projects) => (
               <PopInSection
-                className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden w-full"
+                className="bg-white dark:bg-neutral-900 rounded-md outline-none border border-neutral-100 dark:border-neutral-800 w-full shadow-[3px_4px_0px_1px_#000000] dark:shadow-[3px_4px_0px_1px_#ffffff]"
                 key={projects._id}
               >
-                {/* Image */}
-                <div className="relative">
-                  <Carousel
-                    className="relative h-67.5 md:h-82.5 w-full"
-                    opts={{}}
-                  >
-                    <CarouselContent>
-                      {projects.images?.map((item, index) => (
-                        <CarouselItem
-                          key={item._key ?? item.asset?._ref ?? index}
-                          className="relative w-full h-full"
-                        >
-                          {item?.asset?._ref ?
-                            <Image
-                              src={urlFor(item).url()}
-                              alt={`${projects.title ?? ""} - Image ${index + 1}`}
-                              className="object-cover w-full h-full"
-                              width={1000}
-                              height={1000}
-                              loading="eager"
-                            />
-                          : <Image
-                              src="/placeholder.png"
-                              alt={`${projects.title ?? ""} - placeholder`}
-                              className="object-cover w-full h-full"
-                              width={1000}
-                              height={1000}
-                            />
-                          }
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-
-                    <CarouselPrevious className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
-
-                    <CarouselNext className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
-                  </Carousel>
-                </div>
                 {/* Content */}
-                <div className="p-5">
-                  <h2 className="text-xl font-semibold flex items-center gap-2 darkThemeText">
-                    {projects.title}
-                  </h2>
-
-                  <p
-                    className={`text-sm text-neutral-500 mt-2 ${
-                      expanded[projects._id] ? "" : "line-clamp-2"
-                    }`}
-                  >
-                    {projects.des}
-                  </p>
-                  <button
-                    onClick={() => toggleExpand(projects._id)}
-                    className="text-blue-100 italic text-sm mt-1"
-                  >
-                    {expanded[projects._id] ? "Show less" : "Read more"}
-                  </button>
-
-                  {/* Stacks */}
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {projects.stacks?.map((item, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-full darkThemeText"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Buttons */}
-                  <div className="flex gap-3 mt-5">
-                    <a
-                      href={projects.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90"
-                    >
-                      open live link
-                    </a>
+                <div className="p-5 flex flex-col gap-4">
+                  {/* Header: Title + GitHub */}
+                  <div className="flex items-start justify-between gap-3">
+                    <h2 className="text-sm md:text-base font-semibold darkThemeText leading-snug">
+                      {projects.title}
+                    </h2>
                     <a
                       href={projects.gitLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-xl grid place-content-center"
+                      className="shrink-0 w-8 h-8 bg-neutral-100 dark:bg-neutral-800 rounded-md grid place-content-center hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                      aria-label="GitHub repository"
                     >
                       <GithubIcon size={18} />
                     </a>
                   </div>
-                </div>
-              </PopInSection>
-            ))}
-          </div>)}
 
-      {active === "Mobile Apps" &&
-        (isMobileLoading ?
-          <ProjectCardsSkeleton />
-        : <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8">
-              {mobile?.map((projects) => (
-                <PopInSection
-                  className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden w-full"
-                  key={projects._id}
-                >
-                  {/* Image */}
-                  <div className="relative">
-                    <Carousel
-                      className="relative h-[270px] md:h-[330px] w-full"
-                      opts={{}}
-                    >
-                      <CarouselContent>
-                        {projects.images?.map((item, index) => (
-                          <CarouselItem
-                            key={item._key ?? item.asset?._ref ?? index}
-                            className="relative w-full h-full"
-                          >
-                            {item?.asset?._ref ?
-                              <Image
-                                src={urlFor(item).url()}
-                                alt={`${projects.title ?? ""} - Image ${index + 1}`}
-                                className="object-cover w-full h-full"
-                                width={1000}
-                                height={1000}
-                                loading="eager"
-                              />
-                            : <Image
-                                src="/placeholder.png"
-                                alt={`${projects.title ?? ""} - placeholder`}
-                                className="object-cover w-full h-full"
-                                width={1000}
-                                height={1000}
-                              />
-                            }
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-
-                      <CarouselPrevious className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
-
-                      <CarouselNext className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 darkThemeText" />
-                    </Carousel>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5">
-                    <h2 className="text-xl font-semibold flex items-center gap-2 darkThemeText">
-                      {projects.title}
-                    </h2>
-
+                  {/* Description */}
+                  <div>
                     <p
-                      className={`text-sm text-neutral-500 mt-2 ${
+                      className={`text-xs md:text-sm text-neutral-500 leading-relaxed ${
                         expanded[projects._id] ? "" : "line-clamp-2"
                       }`}
                     >
@@ -248,42 +119,104 @@ const Projects = () => {
                     </p>
                     <button
                       onClick={() => toggleExpand(projects._id)}
-                      className="text-blue-100 italic text-sm mt-1"
+                      className="text-blue-500 dark:text-blue-400 italic text-xs md:text-sm mt-1 hover:underline"
                     >
                       {expanded[projects._id] ? "Show less" : "Read more"}
                     </button>
+                  </div>
+
+                  {/* Stacks */}
+                  <div className="flex flex-wrap gap-2">
+                    {projects.stacks?.map((item, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-xl darkThemeText"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Live Link Button — full width at bottom */}
+                  <a
+                    href={projects.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-neutral-900 text-white dark:bg-white dark:text-black py-2 text-sm rounded text-center font-medium hover:opacity-90 transition-opacity"
+                  >
+                    Open live link
+                  </a>
+                </div>
+              </PopInSection>
+            ))}
+          </div>)}
+
+      {active === "Mobile Apps" &&
+        (isMobileLoading ?
+          <ProjectCardsSkeleton withImage={false} />
+        : <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8">
+              {mobile?.map((projects) => (
+                <PopInSection
+                  className="bg-white dark:bg-neutral-900 rounded-md outline-none border border-neutral-100 dark:border-neutral-800 w-full shadow-[3px_4px_0px_1px_#000000] dark:shadow-[3px_4px_0px_1px_#ffffff]"
+                  key={projects._id}
+                >
+                  {/* Content */}
+                  <div className="p-5 flex flex-col gap-4">
+                    {/* Header: Title + GitHub */}
+                    <div className="flex items-start justify-between gap-3">
+                      <h2 className="text-sm md:text-base font-semibold darkThemeText leading-snug">
+                        {projects.title}
+                      </h2>
+                      <a
+                        href={projects.gitLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 w-8 h-8 bg-neutral-100 dark:bg-neutral-800 rounded-md grid place-content-center hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                        aria-label="GitHub repository"
+                      >
+                        <GithubIcon size={18} />
+                      </a>
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                      <p
+                        className={`text-xs md:text-sm text-neutral-500 leading-relaxed ${
+                          expanded[projects._id] ? "" : "line-clamp-2"
+                        }`}
+                      >
+                        {projects.des}
+                      </p>
+                      <button
+                        onClick={() => toggleExpand(projects._id)}
+                        className="text-blue-500 dark:text-blue-400 italic text-xs md:text-sm mt-1 hover:underline"
+                      >
+                        {expanded[projects._id] ? "Show less" : "Read more"}
+                      </button>
+                    </div>
 
                     {/* Stacks */}
-                    <div className="flex flex-wrap gap-2 mt-4">
+                    <div className="flex flex-wrap gap-2">
                       {projects.stacks?.map((item, index) => (
                         <span
                           key={index}
-                          className="px-3 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-full darkThemeText"
+                          className="px-2 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-xl darkThemeText"
                         >
                           {item}
                         </span>
                       ))}
                     </div>
 
-                    {/* Buttons */}
-                    <div className="flex gap-3 mt-5">
-                      <a
-                        href={projects.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90"
-                      >
-                        open live link
-                      </a>
-                      <a
-                        href={projects.gitLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-xl grid place-content-center"
-                      >
-                        <GithubIcon size={18} />
-                      </a>
-                    </div>
+                    {/* Live Link Button — full width at bottom */}
+                    <a
+                      href={projects.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-neutral-900 text-white dark:bg-white dark:text-black py-2 text-sm rounded text-center font-medium hover:opacity-90 transition-opacity"
+                    >
+                      Open live link
+                    </a>
                   </div>
                 </PopInSection>
               ))}
@@ -296,16 +229,16 @@ const Projects = () => {
         : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8">
             {apis?.map((api) => (
               <PopInSection
-                className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden w-full"
+                className="bg-white dark:bg-neutral-900 rounded-md overflow-hidden w-full shadow-[3px_4px_0px_1px_#000000] dark:shadow-[3px_4px_0px_1px_#ffffff]"
                 key={api._id}
               >
                 <div className="p-5">
-                  <h2 className="text-xl font-semibold flex items-center gap-2 darkThemeText">
+                  <h2 className="text-sm md:text-base font-semibold flex items-center gap-2 darkThemeText">
                     {api.title}
                   </h2>
 
                   <p
-                    className={`text-sm text-neutral-500 mt-2 ${
+                    className={`md:text-sm text-xs text-neutral-500 mt-2 ${
                       expanded[api._id] ? "" : "line-clamp-2"
                     }`}
                   >
@@ -313,7 +246,7 @@ const Projects = () => {
                   </p>
                   <button
                     onClick={() => toggleExpand(api._id)}
-                    className="text-blue-100 italic text-sm mt-1"
+                    className="text-blue-100 italic md:text-sm  text-xs mt-1"
                   >
                     {expanded[api._id] ? "Show less" : "Read more"}
                   </button>
@@ -322,7 +255,7 @@ const Projects = () => {
                     {api.stacks?.map((item, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-full darkThemeText"
+                        className="px-3 py-1 text-[10px] font-medium bg-neutral-100 dark:bg-neutral-800 rounded-full darkThemeText"
                       >
                         {item}
                       </span>
@@ -343,7 +276,7 @@ const Projects = () => {
                         </div>
 
                         <aside>
-                          <h2 className="font-semibold pb-2.5 text-[11px] md:text-[12px] leading-5 darkThemeText">
+                          <h2 className="font-semibold pb-2.5 text-[10px] md:text-[12px] leading-5 darkThemeText">
                             {item}
                           </h2>
                         </aside>
@@ -356,7 +289,7 @@ const Projects = () => {
                       href={api.hostUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90"
+                      className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-1 rounded text-center font-medium hover:opacity-90"
                     >
                       open live link
                     </a>
@@ -364,7 +297,7 @@ const Projects = () => {
                       href={api.readMeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-xl grid place-content-center"
+                      className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded grid place-content-center"
                     >
                       <GithubIcon size={18} />
                     </a>
@@ -380,7 +313,7 @@ const Projects = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
+          <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-1 rounded text-center font-medium hover:opacity-90">
             More
           </Button>
         </a>
