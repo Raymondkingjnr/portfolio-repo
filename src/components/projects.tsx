@@ -3,16 +3,8 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { GithubIcon } from "lucide-react";
-import Image from "next/image";
 import PopInSection from "./pop-in-section";
-import { urlFor } from "@/sanity/lib/image";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+
 import { useApis } from "@/hooks/get-apis";
 import { useProjects, useMobileProjects } from "@/hooks/get-projects";
 import { ProjectCardsSkeleton } from "./loading-sections";
