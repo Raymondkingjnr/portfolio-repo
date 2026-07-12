@@ -5,7 +5,7 @@ import { SkillsIconQueryResult } from "../../sanity.types";
 import { client } from "@/sanity/client";
 
 
-const SkillsIconQuery = defineQuery(`*[_type == "icon"]{
+export const SkillsIconQuery = defineQuery(`*[_type == "icon"]{
   _id,
   _type,
   _createdAt,

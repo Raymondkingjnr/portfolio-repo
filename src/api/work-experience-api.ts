@@ -2,7 +2,7 @@ import {WorkExperienceQueryResult} from "../../sanity.types";
 import {client} from "@/sanity/client";
 import {defineQuery} from "groq";
 
-const workExperienceQuery = defineQuery(`*[_type == "work"] {
+export const workExperienceQuery = defineQuery(`*[_type == "work"] {
   _id,
   _type,
   _createdAt,

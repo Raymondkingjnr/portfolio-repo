@@ -1,138 +1,97 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { devImg } from "@/assets/images";
-import { Button } from "./ui/button";
-import { GitBranchIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
-import Link from "next/link";
-import PopInSection from "./pop-in-section";
-import DarkModeToggle from "./toggle";
-import { client } from "@/sanity/client";
-import { ResumeButtonSkeleton } from "./loading-sections";
+import React from "react";
+import { ArrowUpRight, Download, Github, Linkedin, Mail, Globe, Sparkles } from "lucide-react";
+import { MagneticButton } from "@/components/magic-btn";
+import Image from 'next/image'
+import {profileImag} from "@/assets/images";
 
 type ResumeQueryResult = {
   title?: string;
   url?: string;
 };
 
-const resumeQuery = `*[_type == "resume"][0]{
-  title,
-  "url": file.asset->url
-}`;
 
-const Hero = () => {
-  const [resume, setResume] = useState<ResumeQueryResult>();
-  const [isResumeLoading, setIsResumeLoading] = useState(true);
 
-  const getResume = async () => {
-    try {
-      const file = await client.fetch(resumeQuery);
-      setResume(file);
-    } catch (error) {
-      console.error("error getting file", error);
-    } finally {
-      setIsResumeLoading(false);
-    }
-  };
+export const Hero = ({ resume }: { resume: ResumeQueryResult | null }) => {
 
-  useEffect(() => {
-    getResume();
-  }, []);
+
 
   return (
-    <PopInSection className=" max-w-400 relative mx-auto  pt-[0.7rem] px-6">
-      <div className="flex justify-between mb-4">
-        <Link href="/guest-book" className=" hidden md:block">
-          <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
-            GuestBook
-          </Button>
-        </Link>
-        <div className=" fixed right-4 top-4 z-50">
-          <DarkModeToggle />
-        </div>
-      </div>
-      <div className=" grid place-content-center text-center">
-        <main>
-          <div className="grid place-content-center ">
-            <div className="w-37.5 h-37.5 rounded-full overflow-hidden">
-              <Image
-                src={devImg}
-                alt=""
-                width={150}
-                height={150}
-                className="object-cover w-full h-full"
-              />
+      <section id="top" className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-5 pt-32 pb-20 sm:px-8">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+          <div>
+            {/* Tagline: Triggers instantly */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--gold)_25%,transparent)] bg-[color-mix(in_oklab,var(--gold)_6%,transparent)] px-3 py-1 text-xs font-medium text-[var(--gold-soft)] animate-fade-up">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--gold)] opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--gold)]" />
+            </span>
+              Available for new projects · Q3 2026
+            </div>
+
+            {/* Name/Title: [delay-1 = 80ms] */}
+            <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground animate-fade-up delay-1">
+              Nnaji Arinzechukwu Raymond — Frontend Engineer
+            </p>
+
+            {/* Heading: [delay-2 = 160ms] - Removed delay for LCP element */}
+            <h1 className="text-3xl md:text-[5rem] font-normal leading-[1.02] tracking-tight animate-fade-up">
+              Building interfaces that <em className="text-gradient-gold not-italic">users love</em> and engineers <em className="text-gradient-gold not-italic">enjoy maintaining</em>.
+            </h1>
+
+            {/* FIXES YOUR LCP: [delay-3 = 240ms] */}
+            <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base animate-fade-up delay-3">
+              I build scalable, high-performance web applications with React, Next.js, TypeScript,
+              and modern frontend architecture. From AI-powered mobile apps to travel booking platforms and
+              real-time dashboards — I turn complex ideas into polished digital products.
+            </p>
+
+            {/* Buttons: [delay-4 = 320ms] */}
+            <div className="mt-9 flex flex-wrap items-center gap-3 animate-fade-up delay-4">
+              <MagneticButton href="#work">
+                View Projects <ArrowUpRight className="h-4 w-4" />
+              </MagneticButton>
+                  <a href={resume?.url} download target="_blank" rel="noopener noreferrer" className={"flex items-center font-semibold text-sm gap-2 border rounded-xl px-2 py-3"}>
+                      <Download className="h-4 w-4" /> Download Resume
+                  </a>
+            </div>
+
+            {/* Socials: [delay-5 = 400ms] */}
+            <div className="mt-10 flex items-center gap-1 animate-fade-up delay-5">
+              {[
+                { icon: Github, href: "https://github.com", label: "GitHub" },
+                { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                { icon: Mail, href: "mailto:nnajiarinze001@gmail.com", label: "Email" },
+                { icon: Globe, href: "#", label: "Portfolio" },
+              ].map(({ icon: Icon, href, label }) => (
+                  <a
+                      key={label}
+                      href={href}
+                      aria-label={label}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative grid h-10 w-10 place-items-center rounded-full border border-transparent text-muted-foreground transition-all hover:border-[color-mix(in_oklab,var(--gold)_30%,transparent)] hover:text-[var(--gold)]"
+                  >
+                    <Icon className="h-4 w-4 transition-transform group-hover:scale-110" />
+                  </a>
+              ))}
+              <div className="ml-3 hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
+                <Sparkles className="h-3 w-3 text-gold" />
+                4+ years crafting production frontends
+              </div>
             </div>
           </div>
 
-          <h3 className=" text-2xl darkThemeText md:text-5xl font-bold py-2.5">
-            hi I&apos;m Raymond
-          </h3>
-          <p className="font-normal darkThemeText text-sm md:text-base w-full md:w-1/2 mx-auto">
-            Am a software developer (Frontend) with a passion for building
-            beautiful and functional web applications. I&apos;m a quick learner
-            and I&apos;m always looking for new challenges.
-          </p>
-          <Link href="/guest-book" className="block md:hidden mt-3">
-            <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
-              GuestBook
-            </Button>
-          </Link>
-          <div className=" flex justify-center gap-5 mt-5">
-            <a
-              href="https://twitter.com/_ray_raymond"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black dark:text-white"
-            >
-              <TwitterIcon className=" cursor-pointer" />
-            </a>
-            <a
-              href="https://github.com/Raymondkingjnr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black dark:text-white"
-            >
-              <GitBranchIcon className=" cursor-pointer" />
-            </a>
-            <a
-              href="https://linkedin.com/in/raymond001"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black dark:text-white"
-            >
-              <LinkedinIcon className=" cursor-pointer" />
-            </a>
+          <div className="relative mx-auto w-full max-w-100 lg:max-w-none aspect-[3/4] overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--gold)_20%,transparent)]">
+            <Image
+              src={profileImag}
+              fill
+              alt="raymond profile"
+              loading="lazy"
+              sizes="(max-width: 508px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 hover:scale-105"
+            />
           </div>
-          <div className="flex my-5 gap-2.5 justify-center items-center ">
-            <a
-              href="mailto:nnajiarinze001@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className=" text-white"
-            >
-              <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
-                Contact Me
-              </Button>
-            </a>
-            {isResumeLoading ?
-              <ResumeButtonSkeleton />
-            : <a
-                href={resume?.url}
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-2 rounded-xl text-center font-medium hover:opacity-90">
-                  Download CV
-                </Button>
-              </a>
-            }
-          </div>
-        </main>
-      </div>
-    </PopInSection>
+        </div>
+      </section>
   );
 };
-
-export default Hero;

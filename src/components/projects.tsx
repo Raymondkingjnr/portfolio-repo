@@ -1,317 +1,101 @@
-"use client";
+import React from "react";
+import { Section } from "@/components/section";
+import { urlFor } from "@/sanity/lib/image";
+import Image from "next/image";
+import { ProjectQueryResult } from "../../sanity.types";
+import PopInSection from "@/components/pop-in-section";
 
-import React, { useState } from "react";
-import { Button } from "./ui/button";
-import { GithubIcon } from "lucide-react";
-import PopInSection from "./pop-in-section";
 
-import { useApis } from "@/hooks/get-apis";
-import { useProjects, useMobileProjects } from "@/hooks/get-projects";
-import { ProjectCardsSkeleton } from "./loading-sections";
+interface IProjectsProps {
+    projects: ProjectQueryResult
+}
 
-const Projects = () => {
-  const [active, setActive] = React.useState<
-    "Websites" | "Mobile Apps" | "APIs"
-  >("Websites");
-  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
-
-  const { data: projects, isLoading: isProjectsLoading } = useProjects();
-  const { data: mobile, isLoading: isMobileLoading } = useMobileProjects();
-  const { data: apis, isLoading: isApisLoading } = useApis();
-
-  const toggleExpand = (id: string) => {
-    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
+export const Projects = ({projects}:IProjectsProps ) => {
 
   return (
-    <div className="max-w-400 px-3 mx-auto pb-12">
-      <div className=" w-fit">
-        <h3 className="text-base font-semibold capitalize darkThemeText">
-          projects
-        </h3>
-        {/* <div className="h-0.5 w-full mt-1 bg-[#B0BEC5]" /> */}
-      </div>
-      <PopInSection className=" flex items-center gap-5 mt-6 mb-5">
-        <div
-          className="flex items-center gap-1.5"
-          onClick={() => setActive("Websites")}
-        >
-          {active === "Websites" && (
-            <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
-          )}
-          <h3 className="font-semibold cursor-pointer text-sm darkThemeText">
-            {" "}
-            Websites
-          </h3>
-        </div>
-        {/*  */}
-        <div className=" h-5 w-0.5 bg-[#B0BEC5]" />
-        {/*  */}
-        <div
-          className="flex items-center gap-1.5"
-          onClick={() => setActive("Mobile Apps")}
-        >
-          {active === "Mobile Apps" && (
-            <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
-          )}
-          <h3 className="font-semibold cursor-pointer text-sm darkThemeText">
-            Mobile Apps
-          </h3>
-        </div>
-        <div className=" h-5 w-0.5 bg-[#B0BEC5]" />
-        {/*  */}
-        <div
-          className="flex items-center gap-1.5"
-          onClick={() => setActive("APIs")}
-        >
-          {active === "APIs" && (
-            <div className=" h-2 w-2 bg-orange-500 rounded-3xl" />
-          )}
-          <h3 className="font-semibold cursor-pointer text-sm darkThemeText">
-            APIs
-          </h3>
-        </div>
-      </PopInSection>
+      <Section
+          id="work"
+          eyebrow="Selected Work"
+          title={
+            <>
+              Products I&#39;ve <em className="text-gradient-gold not-italic">designed and shipped</em>.
+            </>
+          }
+          description="A handful of the projects I'm most proud of. Each shipped to real users with real KPIs behind them."
+      >
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-      {active === "Websites" &&
-        (isProjectsLoading ?
-          <ProjectCardsSkeleton withImage={false} />
-        : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-content-center place-items-center gap-x-20 gap-y-8">
-            {projects?.map((projects) => (
+
+          {projects?.map((p) => (
               <PopInSection
-                className="bg-white dark:bg-neutral-900 rounded-md outline-none border border-neutral-100 dark:border-neutral-800 w-full shadow-[3px_4px_0px_1px_#000000] dark:shadow-[3px_4px_0px_1px_#ffffff]"
-                key={projects._id}
+                  key={p._id}
+                  className="glass group relative flex h-full flex-col overflow-hidden rounded-md transition-all hover:-translate-y-1 hover:border-[color-mix(in_oklab,var(--gold)_30%,transparent)]"
               >
-                {/* Content */}
-                <div className="p-5 flex flex-col gap-4">
-                  {/* Header: Title + GitHub */}
-                  <div className="flex items-start justify-between gap-3">
-                    <h2 className="text-sm md:text-base font-semibold darkThemeText leading-snug">
-                      {projects.title}
-                    </h2>
-                    <a
-                      href={projects.gitLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="shrink-0 w-8 h-8 bg-neutral-100 dark:bg-neutral-800 rounded-md grid place-content-center hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-                      aria-label="GitHub repository"
-                    >
-                      <GithubIcon size={18} />
-                    </a>
-                  </div>
-
-                  {/* Description */}
-                  <div>
-                    <p
-                      className={`text-xs md:text-sm text-neutral-500 leading-relaxed ${
-                        expanded[projects._id] ? "" : "line-clamp-2"
-                      }`}
-                    >
-                      {projects.des}
-                    </p>
-                    <button
-                      onClick={() => toggleExpand(projects._id)}
-                      className="text-blue-500 dark:text-blue-400 italic text-xs md:text-sm mt-1 hover:underline"
-                    >
-                      {expanded[projects._id] ? "Show less" : "Read more"}
-                    </button>
-                  </div>
-
-                  {/* Stacks */}
-                  <div className="flex flex-wrap gap-2">
-                    {projects.stacks?.map((item, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-xl darkThemeText"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Live Link Button — full width at bottom */}
                   <a
-                    href={projects.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-neutral-900 text-white dark:bg-white dark:text-black py-2 text-sm rounded text-center font-medium hover:opacity-90 transition-opacity"
-                  >
-                    Open live link
-                  </a>
-                </div>
-              </PopInSection>
-            ))}
-          </div>)}
-
-      {active === "Mobile Apps" &&
-        (isMobileLoading ?
-          <ProjectCardsSkeleton withImage={false} />
-        : <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8">
-              {mobile?.map((projects) => (
-                <PopInSection
-                  className="bg-white dark:bg-neutral-900 rounded-md outline-none border border-neutral-100 dark:border-neutral-800 w-full shadow-[3px_4px_0px_1px_#000000] dark:shadow-[3px_4px_0px_1px_#ffffff]"
-                  key={projects._id}
-                >
-                  {/* Content */}
-                  <div className="p-5 flex flex-col gap-4">
-                    {/* Header: Title + GitHub */}
-                    <div className="flex items-start justify-between gap-3">
-                      <h2 className="text-sm md:text-base font-semibold darkThemeText leading-snug">
-                        {projects.title}
-                      </h2>
-                      <a
-                        href={projects.gitLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 w-8 h-8 bg-neutral-100 dark:bg-neutral-800 rounded-md grid place-content-center hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-                        aria-label="GitHub repository"
-                      >
-                        <GithubIcon size={18} />
-                      </a>
-                    </div>
-
-                    {/* Description */}
-                    <div>
-                      <p
-                        className={`text-xs md:text-sm text-neutral-500 leading-relaxed ${
-                          expanded[projects._id] ? "" : "line-clamp-2"
-                        }`}
-                      >
-                        {projects.des}
-                      </p>
-                      <button
-                        onClick={() => toggleExpand(projects._id)}
-                        className="text-blue-500 dark:text-blue-400 italic text-xs md:text-sm mt-1 hover:underline"
-                      >
-                        {expanded[projects._id] ? "Show less" : "Read more"}
-                      </button>
-                    </div>
-
-                    {/* Stacks */}
-                    <div className="flex flex-wrap gap-2">
-                      {projects.stacks?.map((item, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 rounded-xl darkThemeText"
-                        >
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Live Link Button — full width at bottom */}
-                    <a
-                      href={projects.url}
+                      href={p.url || "#"}
+                      aria-disabled={!p.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full bg-neutral-900 text-white dark:bg-white dark:text-black py-2 text-sm rounded text-center font-medium hover:opacity-90 transition-opacity"
-                    >
-                      Open live link
-                    </a>
-                  </div>
-                </PopInSection>
-              ))}
-            </div>
-          </div>)}
-
-      {active === "APIs" &&
-        (isApisLoading ?
-          <ProjectCardsSkeleton withImage={false} withFeatures={true} />
-        : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8">
-            {apis?.map((api) => (
-              <PopInSection
-                className="bg-white dark:bg-neutral-900 rounded-md overflow-hidden w-full shadow-[3px_4px_0px_1px_#000000] dark:shadow-[3px_4px_0px_1px_#ffffff]"
-                key={api._id}
-              >
-                <div className="p-5">
-                  <h2 className="text-sm md:text-base font-semibold flex items-center gap-2 darkThemeText">
-                    {api.title}
-                  </h2>
-
-                  <p
-                    className={`md:text-sm text-xs text-neutral-500 mt-2 ${
-                      expanded[api._id] ? "" : "line-clamp-2"
-                    }`}
                   >
-                    {api.description}
-                  </p>
-                  <button
-                    onClick={() => toggleExpand(api._id)}
-                    className="text-blue-100 italic md:text-sm  text-xs mt-1"
-                  >
-                    {expanded[api._id] ? "Show less" : "Read more"}
-                  </button>
-
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {api.stacks?.map((item, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 text-[10px] font-medium bg-neutral-100 dark:bg-neutral-800 rounded-full darkThemeText"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-
-                  <section className="flex w-full backdrop-blur-md p-3 bg-white/10 dark:bg-black/30 mt-5 flex-col rounded-md justify-center">
-                    {api.features?.map((item, index) => (
-                      <div key={index} className="flex gap-4">
-                        <div className="flex flex-col items-center">
-                          <div className="border-2 h-4 w-4 rounded-full flex justify-center items-center border-orange-400">
-                            <div className="w-2 h-2 rounded-full bg-[#fbe3ce]" />
-                          </div>
-                          {api.features &&
-                            index !== api.features.length - 1 && (
-                              <div className="h-8 w-px bg-orange-300" />
-                            )}
+                <div className="relative flex h-full flex-col">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[color-mix(in_oklab,var(--gold)_8%,var(--card))] to-[color-mix(in_oklab,var(--gold-deep)_5%,var(--card))] h-40 md:h-50">
+                    <div className="absolute inset-0 bg-grid opacity-30" />
+                    {p.img ? (
+                        <Image
+                            src={urlFor(p.img).url()}
+                            alt={p.title ? `${p.title} project preview` : "Project preview"}
+                            fill
+                            loading="lazy"
+                            sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                    ) : (
+                        <div className="absolute inset-0 flex items-center justify-center px-6 text-center font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                          Project Preview
                         </div>
-
-                        <aside>
-                          <h2 className="font-semibold pb-2.5 text-[10px] md:text-[12px] leading-5 darkThemeText">
-                            {item}
-                          </h2>
-                        </aside>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col justify-between p-3 sm:p-4">
+                    <div>
+                      <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                        {p.title ?? null}
                       </div>
-                    ))}
-                  </section>
-
-                  <div className="flex gap-3 mt-5">
-                    <a
-                      href={api.hostUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-1 rounded text-center font-medium hover:opacity-90"
-                    >
-                      open live link
-                    </a>
-                    <a
-                      href={api.readMeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-14 h-10 bg-neutral-200 dark:bg-neutral-700 rounded grid place-content-center"
-                    >
-                      <GithubIcon size={18} />
-                    </a>
+                      <h3 className=" text-xl font-bold leading-tight tracking-tight sm:text-xl">{p.title ?? null}</h3>
+                      {p.des?.length ? (
+                          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                            {p.des.join(" ")}
+                          </p>
+                      ) : null}
+                      <div className="mt-4 flex flex-wrap gap-1.5">
+                        {p?.stacks?.map((s) => (
+                            <span key={s} className="rounded-full border border-white/5 bg-white/5 px-2.5 py-1 font-mono text-[10px] text-muted-foreground">
+                        {s}
+                      </span>
+                        ))}
+                      </div>
+                    </div>
+                    {/*<div className="mt-6 flex items-center gap-2">*/}
+                    {/*  <a href={p.gitLink || "#"}*/}
+                    {/*     target="_blank"*/}
+                    {/*     rel="noopener noreferrer"*/}
+                    {/*     aria-disabled={!p.gitLink}*/}
+                    {/*     className="inline-flex items-center gap-1.5 rounded-full border border-[color-mix(in_oklab,var(--gold)_25%,transparent)] px-3.5 py-2 text-xs font-medium transition-colors hover:bg-[color-mix(in_oklab,var(--gold)_10%,transparent)]">*/}
+                    {/*    <Github className="h-3.5 w-3.5" /> GitHub*/}
+                    {/*  </a>*/}
+                    {/*  <a href={p.url || "#"}*/}
+                    {/*     aria-disabled={!p.url}*/}
+                    {/*     target="_blank"*/}
+                    {/*     rel="noopener noreferrer"*/}
+                    {/*     className="inline-flex items-center gap-1.5 rounded-full bg-[var(--gold)] px-3.5 py-2 text-xs font-medium text-[var(--primary-foreground)] transition-transform hover:scale-[1.03]">*/}
+                    {/*    Live Demo <ArrowUpRight className="h-3.5 w-3.5" />*/}
+                    {/*  </a>*/}
+                    {/*</div>*/}
                   </div>
                 </div>
+                  </a>
               </PopInSection>
-            ))}
-          </div>)}
-
-      <div className="flex justify-center mt-8">
-        <a
-          href="https://github.com/Raymondkingjnr"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button className="flex-1 bg-neutral-900 text-white dark:bg-white dark:text-black py-1 rounded text-center font-medium hover:opacity-90">
-            More
-          </Button>
-        </a>
-      </div>
-    </div>
+          ))}
+        </div>
+      </Section>
   );
 };
-
-export default Projects;
